@@ -1,9 +1,10 @@
 #include <iostream>
 
 
-#include "wavstream.h"
-#include "soundplayer.h"
+#include "jdrv/soundstream.h"
+#include "jdrv/soundplayer.h"
 
+using namespace jdrv::jaudio;
 
 int main(int argc, char *argv[])
 {

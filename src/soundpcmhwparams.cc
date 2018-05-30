@@ -1,5 +1,5 @@
-#include "soundpcmhwparams.h"
-#include "soundpcm.h"
+#include "jdrv/soundpcmhwparams.h"
+#include "jdrv/soundpcm.h"
 #include <alsa/asoundlib.h>
 
 namespace snd {

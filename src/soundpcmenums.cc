@@ -1,4 +1,4 @@
-#include "soundpcmenums.h"
+#include "jdrv/soundpcmenums.h"
 #include <alsa/asoundlib.h>
 
 namespace snd {

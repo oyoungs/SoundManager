@@ -1,4 +1,4 @@
-#include "soundstream.h"
+#include "jdrv/soundstream.h"
 #include "wavstream.h"
 #include <algorithm>
 
@@ -13,12 +13,15 @@ namespace std {
     }
 
 }
+namespace jdrv {
+    namespace jaudio {
+        std::shared_ptr<SoundStream> StreamCreator::createSoundStream(const std::string &file) {
+            auto lowerfilename = std::tolower(file);
+            if (lowerfilename.find("wav") != lowerfilename.npos) {
+                return std::make_shared<WavStream>(file);
+            }
 
-std::shared_ptr<SoundStream> StreamCreator::createSoundStream(const std::string &file) {
-    auto lowerfilename = std::tolower(file);
-    if(lowerfilename.find("wav") != lowerfilename.npos) {
-        return std::make_shared<WavStream>(file);
+            return nullptr;
+        }
     }
-
-    return nullptr;
 }
