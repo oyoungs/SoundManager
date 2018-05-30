@@ -263,6 +263,9 @@ namespace jdrv {
 
         SoundPlayer::~SoundPlayer() {
             stop();
+            if(_player_play_thread.joinable()) {
+                _player_play_thread.join();
+            }
         }
 
     }
