@@ -2,8 +2,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include <iostream>
-
 
 namespace jdrv {
     namespace jaudio {
@@ -52,8 +50,6 @@ namespace jdrv {
         }
 
         double WavStream::total() const {
-            std::cout << "bytes: " << _wav_head.format.data_chunk.size << ", bytes per second: "
-                      << _wav_head.format.bytes_per_second << std::endl;
             return double(_wav_head.format.data_chunk.size) / _wav_head.format.bytes_per_second;
         }
 
