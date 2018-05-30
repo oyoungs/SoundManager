@@ -3,8 +3,6 @@
 
 #include "wavstream.h"
 #include "soundplayer.h"
-#include <alsa/asoundlib.h>
-#include <stdio.h>
 
 
 int main(int argc, char *argv[])

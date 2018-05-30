@@ -15,9 +15,9 @@ set(SOUND_SRC
     src/wavstream.cc
     )
 
-include_directories(include)
+include_directories(${PROJECT_SOURCE_DIR}/include)
 add_library(sound ${SOUND_SRC})
-target_link_libraries(sound pthread)
+target_link_libraries(sound pthread asound)
 
 add_executable(sound_cli main.cpp)
-target_link_libraries(sound_cli sound asound)
+target_link_libraries(sound_cli sound )
