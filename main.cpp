@@ -20,6 +20,8 @@ int main(int argc, char *argv[])
         wav->open();
         std::cout << "total seconds: " << wav->total() << std::endl;
         std::cout << "sample rate: " << wav->sample_rate() << "Hz" << std::endl;
+        std::cout << "channels: " << wav->channels() << std::endl;
+
 
         if(!player.start()) {
             std::cerr << player.error_msg() << std::endl;

@@ -1,5 +1,6 @@
 #ifndef SOUND_MANAGER_H
 #define SOUND_MANAGER_H
+
 #include "soundplayer.h"
 #include "soundmixer.h"
 #include "soundrecorder.h"

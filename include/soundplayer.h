@@ -33,7 +33,6 @@ public:
 
     void load(const std::shared_ptr<SoundStream>& stream) {
         if(is_playing()) stop();
-        save_stream();
         _raw_stream = stream;
         reset();
     }
@@ -56,7 +55,7 @@ public:
         if(playing) start();
     }
 
-    void save_stream();
+    std::shared_ptr<SoundStream> save_stream();
     void restore_stream();
 
 

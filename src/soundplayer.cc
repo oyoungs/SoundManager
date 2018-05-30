@@ -33,8 +33,9 @@ std::string SoundPlayer::error_msg() const {
     return _player_err_msg;
 }
 
-void SoundPlayer::save_stream() {
+std::shared_ptr<SoundStream> SoundPlayer::save_stream() {
     if(_raw_stream) _stream_stack.push(_raw_stream);
+    return _raw_stream;
 }
 
 void SoundPlayer::restore_stream() {
