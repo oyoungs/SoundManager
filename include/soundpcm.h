@@ -42,6 +42,7 @@ public:
     int readi(void *data, int length);
 
     int bytes_to_frames(int bytes);
+    int frames_to_bytes(int frames);
 
     ~SoundPCM();
 

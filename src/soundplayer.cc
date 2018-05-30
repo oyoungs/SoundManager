@@ -75,29 +75,38 @@ bool SoundPlayer::start() {
 
     _player_play_thread = std::thread([=]{
 
-        auto size = _raw_stream->byte_rate(); // TODO
+        auto samples_per_second = _raw_stream->sample_rate(); // TODO
+        auto size = _pcm.frames_to_bytes(samples_per_second);
         auto buffer = new char[size];
         defer [=] {
             delete buffer;
         };
+
+        ulonglong time_per_sample = 1.0 / _raw_stream->sample_rate() * 1000000; // single sample time: us
 
         if(_pcm.prepare()) {
             while(is_playing()) {
                if(is_paused()) std::this_thread::yield();  // if paused, give the CPU time to the other threads
                else {
                    auto start = std::chrono::system_clock::now();
-                   if(_raw_stream->read(buffer, size) == size) {
-                       auto frames = _pcm.bytes_to_frames(size);
+                   auto bytes = _raw_stream->read_pcm(buffer, size);
+                   if(bytes > 0) {
+                       auto frames = _pcm.bytes_to_frames(bytes);
                        auto start = buffer;
                        do {
+                            auto frame_start = std::chrono::system_clock::now();
                             auto frame = _pcm.writei(start, frames);
                             if(frame > 0) {
                                 start += frame * _raw_stream->block_align();
                                 frames -= frame;
                             }
-
                             if(frame == -EPIPE) {
                                 _pcm.prepare();
+                            }
+                            auto frame_stop = std::chrono::system_clock::now();
+                            auto left = time_per_sample * frame - std::chrono::duration_cast<std::chrono::microseconds>(frame_stop - frame_start).count();
+                            if(left > 0) {
+                                std::this_thread::sleep_for(std::chrono::microseconds(left));
                             }
                        } while(frames > 0);
                    }
@@ -107,7 +116,7 @@ bool SoundPlayer::start() {
                        std::this_thread::sleep_for(std::chrono::milliseconds(1000 - duration));
                    }
 
-                   if(_raw_stream->pos() >= _raw_stream->total() - 1) {
+                   if(_raw_stream->is_end()) {
                        break;
                    }
 
@@ -126,8 +135,10 @@ bool SoundPlayer::start() {
 }
 
 void SoundPlayer::stop() {
-    _player_playing = false;
-    _player_paused  = false;
+    if(_player_playing) {
+        _player_playing = false;
+        _player_paused  = false;
+    }
     if( _player_play_thread.joinable()) {
         _player_play_thread.join();
     }
@@ -141,7 +152,7 @@ void SoundPlayer::resume() {
    if(_raw_stream) _player_paused = false;
 }
 
-u64 SoundPlayer::currentSecond() const {
+double SoundPlayer::currentSecond() const {
     return _raw_stream ? _raw_stream->pos() : 0;
 }
 

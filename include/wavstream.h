@@ -52,23 +52,24 @@ public:
 
     void open() override;
     void close() override;
-    ulonglong total() const override;
-    ulonglong pos() const override;
-    void setPos(ulonglong pos) override;
+    double total() const override;
+    double pos() const override;
+    void setPos(double pos) override;
+    bool is_end() const override;
 
     unsigned int channels() const override;
     unsigned int sample_rate() const override;
     unsigned int byte_rate() const override;
     unsigned int block_align() const override;
     unsigned int bits_per_sample() const override;
-    int read(void *data, int length) override;
+    int read_pcm(void *data, int length) override;
 
 private:
     void loadWavFormatInformation();
 
 private:
     int _wav_handle;
-    long long _data_offset;
+    long long _data_offset, _end_of_file;
     std::string _file_path;
     WavHead _wav_head;
 };

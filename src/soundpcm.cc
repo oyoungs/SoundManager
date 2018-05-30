@@ -70,6 +70,10 @@ int SoundPCM::bytes_to_frames(int bytes) {
     return snd_pcm_bytes_to_frames(_raw_pcm, bytes);
 }
 
+int SoundPCM::frames_to_bytes(int frames) {
+    return snd_pcm_frames_to_bytes(_raw_pcm, frames);
+}
+
 SoundPCM::~SoundPCM() {
     close();
 }

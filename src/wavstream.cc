@@ -2,7 +2,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-
+#include <iostream>
 
 
 
@@ -33,26 +33,32 @@ void WavStream::loadWavFormatInformation() {
             ::read(_wav_handle, &_wav_head.format.data_chunk, sizeof(_wav_head.format.data_chunk));
         }
         _data_offset = lseek(_wav_handle, 0, SEEK_CUR);
+        _end_of_file = lseek(_wav_handle, 0, SEEK_END);
+        lseek(_wav_handle, _data_offset, SEEK_SET);
     }
 }
 
-int WavStream::read(void *data, int length) {
+int WavStream::read_pcm(void *data, int length) {
     return ::read(_wav_handle, data, length);
 }
 
-ulonglong WavStream::total() const {
-    return _wav_head.format.data_chunk.size / _wav_head.format.bytes_per_second;
+double WavStream::total() const {
+    std::cout << "bytes: " << _wav_head.format.data_chunk.size << ", bytes per second: " << _wav_head.format.bytes_per_second << std::endl;
+    return double(_wav_head.format.data_chunk.size) / _wav_head.format.bytes_per_second;
 }
 
-ulonglong WavStream::pos() const {
-    return (lseek(_wav_handle, 0, SEEK_CUR) - _data_offset) / _wav_head.format.bytes_per_second;
+double WavStream::pos() const {
+    return double(lseek(_wav_handle, 0, SEEK_CUR) - _data_offset) / _wav_head.format.bytes_per_second;
 }
 
-void WavStream::setPos(ulonglong pos) {
-    auto offset = _wav_head.format.bytes_per_second * pos;
+void WavStream::setPos(double pos) {
+    ulonglong offset = _wav_head.format.bytes_per_second * pos;
     if(offset < _wav_head.format.data_chunk.size) {
         lseek(_wav_handle, _data_offset + offset, SEEK_SET);
     }
+}
+bool WavStream::is_end() const {
+    return lseek(_wav_handle, 0, SEEK_CUR) == _end_of_file;
 }
 
 unsigned int WavStream::channels() const {

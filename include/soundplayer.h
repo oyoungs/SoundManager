@@ -61,7 +61,7 @@ public:
 
 
     SoundStreamPos currentPos() const;
-    u64 currentSecond() const;
+    double currentSecond() const;
     void setPlayPos(const SoundStreamPos& pos);
     void setPlayPos(unsigned h, unsigned m, unsigned s) { setPlayPos(SoundStreamPos(h, m, s));}
 
