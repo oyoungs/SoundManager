@@ -36,8 +36,6 @@ namespace jdrv {
 
             void load(const std::shared_ptr<SoundStream> &stream);
 
-            bool hw_params_configure();
-
             bool start();
 
             void pause();
@@ -49,6 +47,8 @@ namespace jdrv {
             bool is_playing() const;
 
             bool is_paused() const;
+
+            bool is_finished() const;
 
             std::string error_msg() const;
 
@@ -73,13 +73,13 @@ namespace jdrv {
 
             void setPlayPos(unsigned h, unsigned m, unsigned s) { setPlayPos(SoundStreamPos(h, m, s)); }
 
-            u64 totalSeconds() const;
-
-            bool is_finished() const;
+            double totalSeconds() const;
 
             ~SoundPlayer();
 
         private:
+
+            bool hw_params_configure();
             bool generateHwParams(snd::pcm::HardwareParams &hw);
 
         private:

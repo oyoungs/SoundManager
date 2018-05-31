@@ -214,7 +214,7 @@ namespace jdrv {
             return SoundStreamPos::fromSeconds(currentSecond());
         }
 
-        u64 SoundPlayer::totalSeconds() const {
+        double SoundPlayer::totalSeconds() const {
             return _raw_stream ? _raw_stream->total() : 0;
         }
 
