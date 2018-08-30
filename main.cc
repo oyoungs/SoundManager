@@ -1,10 +1,10 @@
 #include <iostream>
 
 
-#include "jdrv/soundstream.h"
-#include "jdrv/soundplayer.h"
+#include <oyoung/soundstream.h>
+#include <oyoung/soundplayer.h>
 
-using namespace jdrv::jaudio;
+using namespace oyoung::audio;
 
 int main(int argc, char *argv[])
 {
@@ -25,6 +25,8 @@ int main(int argc, char *argv[])
         if(!player.start()) {
             std::cerr << player.error_msg() << std::endl;
         }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
         while(player.is_playing()) {
             std::cout << player.currentSecond() << std::endl;

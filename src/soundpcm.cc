@@ -1,4 +1,4 @@
-#include "jdrv/soundpcm.h"
+#include "soundpcm.h"
 #include <alsa/asoundlib.h>
 
 namespace snd {

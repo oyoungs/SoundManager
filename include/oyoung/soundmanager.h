@@ -6,8 +6,8 @@
 #include "soundrecorder.h"
 
 #include <memory>
-namespace jdrv {
-    namespace jaudio {
+namespace oyoung {
+    namespace audio {
 
 
         class SoundManager {

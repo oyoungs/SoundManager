@@ -19,5 +19,5 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 add_library(sound ${SOUND_SRC})
 target_link_libraries(sound pthread asound)
 
-add_executable(sound_cli main.cpp)
+add_executable(sound_cli main.cc)
 target_link_libraries(sound_cli sound )

@@ -2,16 +2,20 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include <iostream>
+#include <sspdlog/sspdlog.h>
 
-namespace jdrv {
-    namespace jaudio {
+
+namespace oyoung {
+    namespace audio {
         WavStream::WavStream(const std::string &file) : _wav_handle(-1), _file_path(file), _data_offset(0) {
 
         }
 
-        void WavStream::open() {
+        bool WavStream::open() {
             _wav_handle = ::open(_file_path.c_str(), O_RDONLY);
             loadWavFormatInformation();
+            return _wav_handle >= 0;
         }
 
         bool WavStream::is_open() const {
@@ -50,6 +54,8 @@ namespace jdrv {
         }
 
         double WavStream::total() const {
+            std::cout << "bytes: " << _wav_head.format.data_chunk.size << ", bytes per second: "
+                      << _wav_head.format.bytes_per_second << std::endl;
             return double(_wav_head.format.data_chunk.size) / _wav_head.format.bytes_per_second;
         }
 

@@ -1,9 +1,10 @@
 #ifndef SOUND_WAV_STREAM_H
 #define SOUND_WAV_STREAM_H
 
-#include "jdrv/soundstream.h"
-namespace jdrv {
-    namespace jaudio {
+#include <oyoung/soundstream.h>
+
+namespace oyoung {
+    namespace audio {
 
         struct WavFormat {
             unsigned int wave;  // "WAVE"
@@ -49,7 +50,7 @@ namespace jdrv {
         public:
             WavStream(const std::string &file);
 
-            void open() override;
+            bool open() override;
 
             bool is_open() const override;
 
@@ -77,6 +78,7 @@ namespace jdrv {
 
             int read_pcm(void *data, int length) override;
 
+            ~WavStream() { close(); }
         private:
             void loadWavFormatInformation();
 

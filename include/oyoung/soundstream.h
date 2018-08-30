@@ -4,14 +4,14 @@
 #include <memory>
 
 typedef unsigned long long ulonglong;
-namespace jdrv {
-    namespace jaudio {
+namespace oyoung {
+    namespace audio {
         class SoundStream {
         public:
-            virtual void open() = 0;
+            virtual bool open() = 0;
             virtual bool is_open() const = 0;
 
-            virtual void close() {}
+            virtual void close() = 0;
 
             virtual std::string name() const = 0;
 
@@ -33,7 +33,7 @@ namespace jdrv {
 
             virtual int read_pcm(void *data, int length) = 0;
 
-            virtual ~SoundStream() { close(); }
+            virtual ~SoundStream() {  }
         };
 
         class StreamCreator {
