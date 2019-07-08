@@ -6,6 +6,16 @@
 namespace oyoung {
     namespace audio {
 
+        struct guard {
+
+            guard&operator+=(std::function<void()> operation);
+            ~guard();
+
+        private:
+
+            std::vector<std::function<void()>> m_guard_operations;
+        };
+        
         struct WavFormat {
             unsigned int wave;  // "WAVE"
 
