@@ -7,8 +7,33 @@
 
 namespace oyoung {
     namespace audio {
-        WavStream::WavStream(const std::string &file) : _wav_handle(-1), _file_path(file), _data_offset(0) {
+        
+        guard &guard::operator+=(std::function<void()> operation) {
 
+            m_guard_operations.emplace_back(std::move(operation));
+
+            return *this;
+        }
+
+        guard::~guard() {
+            if(!m_guard_operations.empty()) {
+                for(auto it = m_guard_operations.rbegin(); it != m_guard_operations.rend(); ++it) {
+                    if(*it) (*it)();
+                }
+            }
+        }
+        
+        WavStream::WavStream(const std::string &file) 
+            : _wav_handle(-1)
+            , _file_path(file)
+            , _data_offset(0) {
+            _wav_guard += [=] {
+                if (_wav_handle >= 0) {
+                    ::close(_wav_handle);
+                    _wav_handle = -1;
+                }
+            };
+            
         }
 
         bool WavStream::open() {
