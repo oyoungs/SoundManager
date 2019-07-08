@@ -3,6 +3,9 @@
 
 #include <oyoung/soundstream.h>
 
+#include <vector>
+#include <functional>
+
 namespace oyoung {
     namespace audio {
 
