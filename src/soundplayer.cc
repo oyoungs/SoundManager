@@ -107,7 +107,10 @@ namespace oyoung {
                 setErrorMsg("Sound Stream Open Failed");
                 return false;
             }
-
+            if(_pcm->is_open())
+            {
+                _pcm->close();
+            }
             if(!_pcm->is_open() && !_pcm->open(_player_name)) {
                 setErrorMsg(_pcm->error_msg());
                 return false;
@@ -115,6 +118,10 @@ namespace oyoung {
 
 
             if(!hw_params_configure()) {
+                if(_pcm->is_open())
+                {
+                    _pcm->close();
+                }
                 return false;
             }
 
